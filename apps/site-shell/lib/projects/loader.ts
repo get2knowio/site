@@ -17,6 +17,7 @@ import type {
   ProjectCardModel,
   ProjectDetailModel,
   ProjectStatus,
+  ProjectTier,
   ProcessedImage,
 } from './types';
 
@@ -219,6 +220,9 @@ function loadProject(slug: string, contentDir: string): Project | null {
   if (validated.order !== undefined) {
     project.order = validated.order;
   }
+  if (validated.tier) {
+    project.tier = validated.tier as ProjectTier;
+  }
 
   return project;
 }
@@ -293,6 +297,13 @@ export function getAllProjects(): Project[] {
     // Fall back to alphabetical by name
     return a.name.localeCompare(b.name);
   });
+}
+
+/**
+ * Get all projects filtered by tier
+ */
+export function getProjectsByTier(tier: ProjectTier): Project[] {
+  return getAllProjects().filter((p) => (p.tier ?? 'core') === tier);
 }
 
 /**

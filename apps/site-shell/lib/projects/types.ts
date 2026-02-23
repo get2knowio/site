@@ -20,6 +20,11 @@ export interface ProcessedImage {
 export type ProjectStatus = 'ready' | 'in-progress' | 'coming-soon';
 
 /**
+ * Project tier - core Gang of Four vs side quest experiments
+ */
+export type ProjectTier = 'core' | 'side-quest';
+
+/**
  * External resource link associated with a project
  */
 export interface ProjectLink {
@@ -52,6 +57,8 @@ export interface Project {
   image?: ProcessedImage;
   /** Display order (lower numbers appear first) */
   order?: number;
+  /** Project tier - core or side-quest */
+  tier?: ProjectTier;
 }
 
 /**

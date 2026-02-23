@@ -17,6 +17,7 @@ export const projectHeroSchema = z.object({
 });
 
 export const projectStatusSchema = z.enum(['ready', 'in-progress', 'coming-soon']);
+export const projectTierSchema = z.enum(['core', 'side-quest']).optional().default('core');
 
 /**
  * Schema for project frontmatter (parsed from markdown files)
@@ -30,6 +31,7 @@ export const projectFrontmatterSchema = z.object({
   links: z.array(projectLinkSchema).min(1, 'At least one link is required'),
   hero: projectHeroSchema.optional(),
   order: z.number().int().optional(),
+  tier: projectTierSchema,
 });
 
 /**
