@@ -111,7 +111,7 @@ export default function ClimaxFlowDiagram({ colorVar }: ClimaxFlowDiagramProps) 
       <div className="flex items-center justify-center gap-1 sm:gap-2">
         <div className="flex-1 max-w-[160px]">
           <Box
-            title="LLM Client"
+            title="MCP Client"
             subtitle="Claude, Cursor, etc."
             colorVar={colorVar}
           />
@@ -132,7 +132,7 @@ export default function ClimaxFlowDiagram({ colorVar }: ClimaxFlowDiagramProps) 
 
         <div className="flex-1 max-w-[160px]">
           <Box
-            title="Your CLI"
+            title="Target CLI"
             subtitle="git, claude, docker…"
             colorVar={colorVar}
           />

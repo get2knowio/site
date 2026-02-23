@@ -30,7 +30,7 @@ CLImax eliminates that boilerplate. Describe your CLI's commands in a YAML confi
 
 <ClimaxFlowDiagram />
 
-You need three things: CLImax, a YAML config describing your CLI's commands, and the CLI itself on PATH. Optionally, a policy file controls which tools are enabled and constrains argument values.
+You need three things: CLImax, a YAML config describing your CLI's commands, and the CLI itself on PATH. Optionally, a policy file controls which tools are enabled, constrains argument values, overrides descriptions, and can route execution through Docker containers.
 
 ## Progressive Discovery
 
@@ -38,10 +38,10 @@ Exposing every subcommand as an individual MCP tool doesn't scale. A CLI like `k
 
 CLImax solves this with a two-tool pattern inspired by Cloudflare's [Code Mode](https://blog.cloudflare.com/code-mode-mcp/) architecture:
 
-- **`climax_search`** — Find tools by keyword, category, or CLI name
+- **`climax_search`** — Find tools by keyword, category, CLI name, or browse all available CLIs
 - **`climax_call`** — Execute a discovered tool by name
 
-The agent discovers capabilities on-demand. Two tool definitions, constant overhead, regardless of how many CLIs you wire up.
+The agent discovers capabilities on-demand. Two tool definitions, constant overhead, regardless of how many CLIs you wire up. For simpler setups, `--classic` mode registers all tools directly instead.
 
 ## Creating Configs
 
@@ -56,9 +56,9 @@ The agent inspects subcommands and generates a ready-to-use config. No manual YA
 
 ## Policies
 
-Configs define what tools exist. Policies control what's allowed — and the two are intentionally separate.
+Configs define what tools exist. Policies control what's allowed — and the two are intentionally separate. Policies can restrict which tools are enabled, constrain argument values, override descriptions, and route execution through Docker containers for sandboxing.
 
-This means you can share a comprehensive `git.yaml` across your team while locking down individual environments: enable only read-only tools in CI, restrict argument values for junior contributors, or route all execution through Docker containers for sandboxing. The config stays the same; the policy shapes what any given deployment can actually do.
+This means you can share a comprehensive `git.yaml` across your team while locking down individual environments: read-only tools in CI, restricted argument values per contributor, or fully containerized execution. The config stays the same; the policy shapes what any given deployment can actually do.
 
 ```yaml
 # readonly-git.policy.yaml
@@ -78,10 +78,10 @@ Same git config, but the agent can only read — never write.
 
 CLImax ships with configs for common tools:
 
-- **git** — status, log, diff, branch, add, commit
-- **claude** — non-interactive prompts with model and output control
-- **docker** — container and image inspection
-- **obsidian** — vault management (53 tools)
+- **git** — common Git operations: status, log, diff, branch, add, commit (6 tools)
+- **claude** — Claude Code integration: ask, ask with model, JSON output, custom system prompt (4 tools)
+- **docker** — container and image inspection: ps, images, logs, inspect, compose ps (5 tools)
+- **obsidian** — vault management: read, write, search, tags, links, tasks, daily notes, properties (53 tools)
 
 ## Getting Started
 
@@ -95,6 +95,15 @@ climax git
 # Combine multiple CLIs
 climax claude git docker
 
-# List available tools
+# Classic mode — register all tools directly
+climax --classic git
+
+# List bundled configs
+climax list
+
+# List tools in a config
 climax list git
+
+# Validate a config
+climax validate git
 ```
